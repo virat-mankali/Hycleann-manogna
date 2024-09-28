@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>GHMC Dashboard</title>
+    <style>
+      body {
+        font-family: "Arial", sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f0f0f0;
+        line-height: 1.6;
+      }
+
+      /* Navigation bar */
+      nav {
+        background-color: #006400; /* GHMC Green */
+        padding: 15px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        color: white;
+        position: sticky;
+        top: 0;
+        z-index: 10;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      }
+
+      nav h1 {
+        margin: 0;
+        font-size: 24px;
+      }
+
+      nav ul {
+        list-style: none;
+        display: flex;
+      }
+
+      nav ul li {
+        margin-left: 20px;
+      }
+
+      nav ul li a {
+        color: white;
+        text-decoration: none;
+        font-weight: bold;
+        transition: color 0.3s;
+        padding: 5px 10px;
+        border-radius: 5px;
+      }
+
+      nav ul li a:hover {
+        background-color: #a3d49c; /* Light green on hover */
+        color: #006400; /* Change text color on hover */
+      }
+
+      /* Dashboard sections */
+      .container {
+        padding: 20px;
+        max-width: 1200px;
+        margin: 0 auto; /* Center container */
+      }
+
+      .section {
+        background-color: white;
+        padding: 20px;
+        margin-bottom: 20px;
+        border-radius: 8px;
+        box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s;
+      }
+
+      .section:hover {
+        transform: translateY(-5px); /* Lift effect on hover */
+      }
+
+      .section h2 {
+        color: #006400;
+        font-size: 28px;
+        border-bottom: 2px solid #87ceeb; /* Underline effect */
+        padding-bottom: 10px;
+      }
+
+      /* Design animations */
+      .header-animation {
+        width: 100%;
+        height: 100px;
+        background-color: #87ceeb; /* Light sky blue for GHMC theme */
+        position: relative;
+        overflow: hidden;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      }
+
+      .animation-element {
+        width: 100px;
+        height: 100px;
+        background-color: rgba(
+          0,
+          100,
+          0,
+          0.7
+        ); /* Semi-transparent GHMC green */
+        border-radius: 50%;
+        position: absolute;
+        animation: float 6s ease-in-out infinite;
+        box-shadow: 0 0 10px rgba(0, 100, 0, 0.5);
+        transition: transform 0.3s ease-in-out,
+          background-color 0.3s ease-in-out;
+      }
+
+      @keyframes float {
+        0% {
+          transform: translateY(0);
+        }
+
+        50% {
+          transform: translateY(-20px) scale(1.1);
+        }
+
+        100% {
+          transform: translateY(0);
+        }
+      }
+
+      .animation-element:hover {
+        transform: scale(1.2); /* Scale up on hover */
+        background-color: red; /* Change color to red on hover */
+      }
+
+      .animation-element:nth-child(2) {
+        left: 30%;
+        animation-duration: 8s;
+      }
+
+      .animation-element:nth-child(3) {
+        left: 60%;
+        animation-duration: 10s;
+      }
+
+      .maps-section {
+        height: 400px;
+        background-color: #fff;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+      }
+
+      /* Alert section */
+      .alert-section {
+        background-color: #4caf50; /* Green color */
+        color: white;
+        padding: 20px;
+        border-radius: 8px;
+        margin: 20px 0;
+        position: relative;
+        overflow: hidden;
+        transition: background-color 0.3s ease;
+      }
+
+      .alert-section:hover {
+        background-color: #f44336; /* Red color on hover */
+      }
+
+      /* Footer */
+      footer {
+        text-align: center;
+        padding: 20px;
+        background-color: #006400;
+        color: white;
+        position: relative;
+        bottom: 0;
+        width: 100%;
+      }
+
+      /* Button styles */
+      button {
+        padding: 10px 15px;
+        background-color: #006400;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background-color 0.3s, transform 0.3s;
+        font-size: 16px;
+      }
+
+      button:hover {
+        background-color: #004d00; /* Darker green on hover */
+        transform: translateY(-3px); /* Lift effect on hover */
+      }
+
+      /* Supervisor section */
+      .supervisor-section {
+        margin-top: 15px;
+        transition: transform 0.3s;
+      }
+
+      .supervisor-section:hover {
+        transform: translateY(-5px); /* Lift effect on hover */
+      }
+
+      /* Form styles */
+      form {
+        display: flex;
+        align-items: center;
+        gap: 10px; /* Space between elements */
+      }
+
+      select {
+        padding: 10px;
+        border-radius: 4px;
+        border: 1px solid #ccc;
+        font-size: 16px;
+        transition: border-color 0.3s;
+      }
+
+      select:hover {
+        border-color: #006400; /* Change border color on hover */
+      }
+
+      #supervisorResult {
+        margin-top: 10px;
+        font-weight: bold;
+        color: #006400; /* Color for results */
+      }
+
+      #map {
+        min-height: 600px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- Navigation bar -->
+    <nav>
+      <h1>GHMC Dashboard</h1>
+      <ul>
+        <li><a href="#supervisor">Supervisor</a></li>
+        <li><a href="#maps">Maps</a></li>
+      </ul>
+    </nav>
+
+    <!-- Header Animation -->
+    <div class="header-animation">
+      <div class="animation-element" style="left: 10%"></div>
+      <div class="animation-element"></div>
+      <div class="animation-element"></div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="container">
+      <!-- Alert Section -->
+      <div class="alert-section">
+        <h3>Alert: Check for Updates</h3>
+        <p>Hover over this alert for important notifications!</p>
+      </div>
+
+      <!-- Supervisor Section -->
+      <div class="section" id="supervisor">
+        <h2>Supervisor Dashboard</h2>
+        <p>
+          This section is for Supervisors to check statuses and locate
+          divisions.
+        </p>
+        <div class="supervisor-section">
+          <h3>Check Status</h3>
+          <p>Select a status to check:</p>
+          <form id="statusForm">
+            <label for="status">Status:</label>
+            <select name="status" id="status">
+              <option value="active">Active</option>
+              <option value="inactive">Inactive</option>
+            </select>
+            <button type="button" onclick="checkStatus()">Check</button>
+          </form>
+          <div id="supervisorResult"></div>
+        </div>
+        <div class="supervisor-section">
+          <h3>Locate Divisions</h3>
+          <p>Find the divisions on the map:</p>
+          <button type="button" onclick="locateDivisions()">
+            Locate Divisions
+          </button>
+          <div id="divisionResult"></div>
+        </div>
+      </div>
+
+      <!-- Maps Section -->
+      <div class="section" id="maps">
+        <h2>Maps and Routes</h2>
+        <p>View and navigate through your routes:</p>
+        <div class="maps-section" id="map">
+          <gmp-map
+            center="17.647598 , 77.798771"
+            zoom="15"
+            map-id="DEMO_MAP_ID"
+            style="height: 600px"
+          >
+            <!-- Add markers for loc - 1 -->
+            <gmp-advanced-marker
+              position="17.646284, 77.801292"
+              title="Bin 1"
+              icon="https://cdn-icons-png.flaticon.com/512/484/484662.png"
+            ></gmp-advanced-marker>
+
+            <!-- Add markers for loc - 2 -->
+            <gmp-advanced-marker
+              position="17.649719, 77.799565"
+              title="Bin 2"
+              icon="https://cdn-icons-png.flaticon.com/512/484/484662.png"
+            ></gmp-advanced-marker>
+
+            <!-- Add markers for loc - 3 -->
+            <gmp-advanced-marker
+              position="17.642948, 77.797601"
+              title="Bin 3"
+              icon="https://cdn-icons-png.flaticon.com/512/484/484662.png"
+            ></gmp-advanced-marker>
+          </gmp-map>
+        </div>
+      </div>
+    </div>
+
+    <footer>© 2024 GHMC - Greater Hyderabad Municipal Corporation</footer>
+
+    <script>
+      // Function to check status
+      function checkStatus() {
+        const status = document.getElementById("status").value;
+        const result = `Status checked: ${status}`;
+        document.getElementById("supervisorResult").textContent = result;
+      }
+
+      // Function
+
+      // Function to locate divisions
+      function locateDivisions() {
+        const result = "Divisions located successfully.";
+        document.getElementById("divisionResult").textContent = result;
+        // You can integrate additional logic to show divisions on the map here.
+      }
+    </script>
+
+    <script
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBSTZLRniVN0bVN2OmaUAQ3P2Pe9SrfP4E&libraries=maps,marker&v=beta"
+      defer
+    ></script>
+  </body>
+</html>
